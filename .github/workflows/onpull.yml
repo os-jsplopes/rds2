@@ -6,6 +6,7 @@ name: Node.js CI
 on:
   pull_request:
     branches: [ master ]
+    types: [closed]
 
 jobs:
   build:
@@ -21,3 +22,12 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@jsplopes"
     - run:  'echo ${{github.head_ref}} - ${{github.base_ref}}'
+  merge-PR:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context         
+        run: 'echo "$GITHUB_CONTEXT"'
+        env: 
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+         
