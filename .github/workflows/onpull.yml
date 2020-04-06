@@ -26,7 +26,7 @@ jobs:
           scope: "@jsplopes"
     - name: Bump version
       if: contains(github.head_ref, 'hotfix')
-      run: 'echo ${{contains(github.head_ref, "hotfix")}}'
+      run: "echo ${{contains(github.head_ref, 'hotf')}}"
   merge-PR:
     if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
