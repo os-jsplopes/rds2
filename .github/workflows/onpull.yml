@@ -14,11 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: BUILD HOTFIX
+        run: 'echo HOTFIX'
   test2:    
     if: contains(github.head_ref, 'develop')
     runs-on: ubuntu-latest
     steps:
-      - name: BUILD DEVELOP  
+      - name: BUILD DEVELOP
+        run: 'echo DEV'
         
   build:
 
@@ -38,6 +40,7 @@ jobs:
     - name: Bump version
       if: contains(github.head_ref, 'hotfix')
       run: "echo ${{contains(github.head_ref, 'hotf')}}"
+      
   merge-PR:
     if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
