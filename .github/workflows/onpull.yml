@@ -12,6 +12,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+        GITHUB_USER: "os-jsplopes"
+        GITHUB_EMAIL: "julio.lopes@outsystems.com"
 
     steps:
     - uses: actions/checkout@v2
@@ -21,7 +24,15 @@ jobs:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@jsplopes"
-    - run:  'echo ${{github.head_ref}} - ${{github.base_ref}}'
+    - name: Bump version
+      if: contains(${{github.head_ref}}, "hotfix")
+      run: |
+          git config --global user.name $GITHUB_USER
+          git config --global user.email $GITHUB_EMAIL
+          npm version patch
+          git push --tags hotfix
+    - name: Publish package
+      run: npm publish --tag "aaa"
   merge-PR:
     if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
