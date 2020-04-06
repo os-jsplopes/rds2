@@ -9,6 +9,17 @@ on:
     types: [closed]
 
 jobs:
+  test1:    
+    if: contains(github.head_ref, 'hotfix')
+    runs-on: ubuntu-latest
+    steps:
+      - name: BUILD HOTFIX
+  test2:    
+    if: contains(github.head_ref, 'develop')
+    runs-on: ubuntu-latest
+    steps:
+      - name: BUILD DEVELOP  
+        
   build:
 
     runs-on: ubuntu-latest
@@ -18,7 +29,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 12
       uses: actions/setup-node@v1
       with:
           node-version: "12.x"
