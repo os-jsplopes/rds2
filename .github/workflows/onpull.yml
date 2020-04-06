@@ -25,7 +25,7 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@jsplopes"
     - name: Bump version
-      if: contains(github.head_ref, "hotfix")
+      if: contains(github.head_ref, 'hotfix')
       run: 'echo ${{contains(github.head_ref, "hotfix")}}'
   merge-PR:
     if: github.event.pull_request.merged == false
