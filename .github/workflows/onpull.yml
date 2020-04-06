@@ -25,14 +25,8 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@jsplopes"
     - name: Bump version
-      if: contains(${{github.head_ref}}, "hotfix")
-      run: |
-          git config --global user.name $GITHUB_USER
-          git config --global user.email $GITHUB_EMAIL
-          npm version patch
-          git push --tags hotfix
-    - name: Publish package
-      run: npm publish --tag "aaa"
+      if: contains(github.head_ref, "hotfix")
+      run: 'echo ${{contains(github.head_ref, "hotfix")}}'
   merge-PR:
     if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
