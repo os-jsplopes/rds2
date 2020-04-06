@@ -9,18 +9,17 @@ on:
     types: [closed]
 
 jobs:
-  test1:    
-    if: contains(github.head_ref, 'hotfix')
+        
+  pullrequest-review:
     runs-on: ubuntu-latest
     steps:
-      - name: BUILD HOTFIX
-        run: 'echo HOTFIX'
-  test2:    
-    if: contains(github.head_ref, 'develop')
-    runs-on: ubuntu-latest
-    steps:
-      - name: BUILD DEVELOP
-        run: 'echo DEV'
+      - name: Validate pull request
+        if: contains(github.head_ref, 'hotfix') == false
+        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          event: DISMISS
+          body: 'Cant create pull request from ${{github.head_ref}} 🎊'
         
   build:
 
