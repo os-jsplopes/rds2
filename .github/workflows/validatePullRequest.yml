@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Automatic pull request review
-      if: (contains(github.head_ref, 'hotfix') or contains(github.head_ref, 'release')) == false
+      if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
       uses: thollander/actions-comment-pull-request@1.0.0
       with:
         # Message that should be printed in the pull request
