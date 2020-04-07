@@ -20,3 +20,4 @@ jobs:
         event: DISMISS
         # The contents of the review body comment. Required when event is COMMENT or REQUEST_CHANGES.
         body: 'Cant create pull request from ${{github.head_ref}} 🎊'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
