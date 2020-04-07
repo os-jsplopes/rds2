@@ -18,6 +18,6 @@ jobs:
       uses: thollander/actions-comment-pull-request@1.0.0
       with:
         # Message that should be printed in the pull request
-        message: '🚨 Invalid source branch ${{github.head_ref}}, the master only accept pull requests from "Hotfix" or "Release". Please close this review. 🚨'
+        message: '## :rotating_light: Invalid Pull Request :rotating_light:  ### Details:  Invalid source branch **develop**, the master only accept pull requests from **Hotfix** or **Release**.  Please close the pull request.  :thinking:'
         # Github token of the repository (automatically created by Github)
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
