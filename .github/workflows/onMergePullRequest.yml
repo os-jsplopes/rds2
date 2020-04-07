@@ -25,10 +25,10 @@ jobs:
       with:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@$GITHUB_USER"
+          scope: "@${{$GITHUB_USER}}"
     - name: Bump version
       run: |
-          'echo "@$GITHUB_USER"'
+          'echo "@${{$GITHUB_USER}}"'
           git config --global user.name $GITHUB_USER
           git config --global user.email $GITHUB_EMAIL
           npm version patch
