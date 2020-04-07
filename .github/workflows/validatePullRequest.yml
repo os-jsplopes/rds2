@@ -1,0 +1,23 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Validate Pull Request
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [opened]
+
+jobs:
+        
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Automatic pull request review
+      if: (contains(github.head_ref, 'hotfix') or contains(github.head_ref, 'release')) == false
+      uses: thollander/actions-comment-pull-request@1.0.0
+      with:
+        # Message that should be printed in the pull request
+        message: '🚨 Invalid source branch ${{github.head_ref}}, the master only accept pull requests from "Hotfix" or "Release". Please close this review. 🚨'
+        # Github token of the repository (automatically created by Github)
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
