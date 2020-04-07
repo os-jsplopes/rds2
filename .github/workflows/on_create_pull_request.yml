@@ -13,10 +13,11 @@ jobs:
   pullrequest-review:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate pull request
-        if: contains(github.head_ref, 'hotfix') == false
-        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          event: DISMISS
-          body: 'Cant create pull request from ${{github.head_ref}} 🎊'        
+    - name: Automatic pull request review
+      uses: AndrewMusgrave/automatic-pull-request-review@0.0.2
+      with:
+        # The event to perform on the pull request review.
+        event: DISMISS
+        # The contents of the review body comment. Required when event is COMMENT or REQUEST_CHANGES.
+        body: 'Cant create pull request from ${{github.head_ref}} 🎊'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
