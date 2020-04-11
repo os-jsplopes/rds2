@@ -9,6 +9,11 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: "echo ${{github.head_ref}}"
   validate:
     runs-on: ubuntu-latest
     if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
