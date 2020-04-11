@@ -11,9 +11,10 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
+
     steps:
       - name: Automatic pull request review
-        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
         uses: thollander/actions-comment-pull-request@1.0.0
         with:
           # Message that should be printed in the pull request
@@ -21,3 +22,19 @@ jobs:
           # Github token of the repository (automatically created by Github)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: exit 1
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: npm install
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+        env:
+          CI: true
+    needs: [validate]
