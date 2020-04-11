@@ -3,32 +3,38 @@
 
 name: Node.js CI
 
-on:  
+on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
     types: [closed]
 
 jobs:
-  
-  build:
+  test:
+    runs-on: ubuntu-latest
 
+    steps:
+      - run: "echo ${{github.head_ref}}"
+
+  build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     env:
-        GITHUB_USER: "os-jsplopes"
-        GITHUB_EMAIL: "julio.lopes@outsystems.com"
+      GITHUB_USER: "os-jsplopes"
+      GITHUB_EMAIL: "julio.lopes@outsystems.com"
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12
-      uses: actions/setup-node@v1
-      with:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
-          scope: '@${{env.GITHUB_USER}}'
-    - name: Bump version
-      run: |
-          git config --global user.name $GITHUB_USER
-          git config --global user.email $GITHUB_EMAIL
-          npm version patch
-          git push --tags origin HEAD:master
+          scope: "@${{env.GITHUB_USER}}"
+      #- name: Bump version
+      #  run: |
+      #    git config --global user.name $GITHUB_USER
+      #    git config --global user.email $GITHUB_EMAIL
+      #    npm version patch
+      #    git push --tags origin HEAD:master
+      #- name: Publish
+      #  run: npm publish --tag release
