@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  validate:
+  validate pull request:
     runs-on: ubuntu-latest
     if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
 
