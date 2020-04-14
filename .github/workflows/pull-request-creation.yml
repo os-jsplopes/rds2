@@ -1,23 +1,37 @@
+#Workflow tah will trigger a draft pull request creation on master branch
+
 name: Pull Request
 
 on:
   push:
-    branches: [hotfix/*]
+    branches: [hotfix/*, release/*]
 
 jobs:
-  create:
+  create-hotfix:
     runs-on: ubuntu-latest
-    name: Create or Update
-
+    if: contains(github.head_ref, 'hotfix')
+    name: Create Pull Request
     steps:
-      - run: echo ::set-env name=REPOSITORY_NAME::${{github.ref:11}}
-      - run: echo $REPOSITORY_NAME
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
           pr_title: "Pulling ${{ github.ref }} into master"
           pr_assignee: ${{github.actor}}
-          pr_label: "WIP,bugfix"
+          pr_label: "WIP, bugfix"
+          pr_draft: true
+          github_token: ${{ secrets.GAT }}
+  create-release:
+    runs-on: ubuntu-latest
+    if: contains(github.head_ref, 'release')
+    name: Create Pull Request
+    steps:
+      - uses: actions/checkout@v1
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          pr_title: "Pulling ${{ github.ref }} into master"
+          pr_assignee: ${{github.actor}}
+          pr_label: "WIP, release"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
