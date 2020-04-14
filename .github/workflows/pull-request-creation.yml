@@ -7,9 +7,10 @@ on:
 jobs:
   create:
     runs-on: ubuntu-latest
+    name: Create or Update
 
     steps:
-      - run: "echo ${{tojson(github)}}"
+      - run: "echo ${{toJson(github)}}"
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
