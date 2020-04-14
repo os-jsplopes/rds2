@@ -10,11 +10,13 @@ jobs:
     name: Create or Update
 
     steps:
+      - run: echo ::set-env name=REPOSITORY_NAME::${github.ref:11}
+      - run: echo $REPOSITORY_NAME
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref:11 }} into master"
+          pr_title: "Pulling ${{ github.ref }} into master"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP,bugfix"
           pr_draft: true
