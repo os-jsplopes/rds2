@@ -10,12 +10,11 @@ jobs:
     name: Create or Update
 
     steps:
-      - run: "echo $GITHUB_CONTEXT"
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.head_ref }} into master"
+          pr_title: "Pulling ${{ github.ref:11 }} into master"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP,bugfix"
           pr_draft: true
