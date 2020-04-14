@@ -9,10 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: "echo ${{github.actor}}"
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
+          pr_title: "Pulling ${{ github.ref }} into master"
+          pr_body: ":crown: *An automated PR*"
           pr_assignee: ${{github.actor}}
           pr_label: "auto-pr"
           pr_draft: true
