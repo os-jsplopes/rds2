@@ -9,13 +9,13 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  PR-validate:
+  validate-branch:
     runs-on: ubuntu-latest
-    if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
 
     steps:
       - name: Automatic pull request review
         uses: thollander/actions-comment-pull-request@1.0.0
+        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
         with:
           # Message that should be printed in the pull request
           message: |
@@ -27,8 +27,10 @@ jobs:
           # Github token of the repository (automatically created by Github)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: exit 1
-
-  PR-build:
+        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
+      - run: exit 0
+        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
+  validate-build:
     runs-on: ubuntu-latest
     if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
 

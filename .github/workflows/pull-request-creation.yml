@@ -1,0 +1,21 @@
+name: Pull Request
+
+on:
+  push:
+    branches: [hotfix/*]
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          pr_title: "Pulling ${{ github.head_ref }} into master"
+          pr_body: ":crown: *An automated PR*"
+          pr_assignee: ${{github.actor}}
+          pr_label: "automated pr,draft"
+          pr_draft: true
+          github_token: ${{ secrets.GAT }}
