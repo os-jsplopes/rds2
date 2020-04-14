@@ -9,12 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: "echo ${{tojson(github)}}"
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
           pr_title: "Pulling ${{ github.head_ref }} into master"
           pr_assignee: ${{github.actor}}
-          pr_label: "automated pr,WIP,bugfix"
+          pr_label: "WIP,bugfix"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
