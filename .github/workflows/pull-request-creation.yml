@@ -14,8 +14,7 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           pr_title: "Pulling ${{ github.head_ref }} into master"
-          pr_body: ":crown: *An automated PR*"
           pr_assignee: ${{github.actor}}
-          pr_label: "automated pr,draft"
+          pr_label: "automated pr,WIP,bugfix"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
