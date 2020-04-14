@@ -1,11 +1,11 @@
-name: Create Pull Request
+name: Pull Request
 
 on:
   push:
     branches: [hotfix/*]
 
 jobs:
-  pull-request:
+  create:
     runs-on: ubuntu-latest
 
     steps:
