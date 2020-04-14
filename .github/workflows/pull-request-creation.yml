@@ -9,7 +9,7 @@ on:
 jobs:
   create-hotfix:
     runs-on: ubuntu-latest
-    if: contains(github.head_ref, 'hotfix')
+    if: contains(github.ref, 'hotfix')
     name: Create Pull Request
     steps:
       - uses: actions/checkout@v1
@@ -23,7 +23,7 @@ jobs:
           github_token: ${{ secrets.GAT }}
   create-release:
     runs-on: ubuntu-latest
-    if: contains(github.head_ref, 'release')
+    if: contains(github.ref, 'release')
     name: Create Pull Request
     steps:
       - uses: actions/checkout@v1
