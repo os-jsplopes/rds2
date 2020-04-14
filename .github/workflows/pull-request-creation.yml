@@ -10,7 +10,7 @@ jobs:
     name: Create or Update
 
     steps:
-      - run: echo ::set-env name=REPOSITORY_NAME::${github.ref:11}
+      - run: echo ::set-env name=REPOSITORY_NAME::${{github.ref:11}}
       - run: echo $REPOSITORY_NAME
       - uses: actions/checkout@v1
       - name: pull-request
