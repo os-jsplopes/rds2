@@ -22,7 +22,7 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           pr_title: ${{github.event.pull_request.title}}
-          pr_body: ${{pr_template}}
+          pr_body: ${{steps.pr_template.outputs.content}}
           pr_assignee: ${{github.actor}}
           pr_label: "WIP, bug"
           pr_draft: true
