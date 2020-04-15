@@ -21,7 +21,7 @@ jobs:
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: ${{github.event.pull_request.title}}
+          pr_title: " aaa: ${{github.event.pull_request.title}}"
           pr_body: "##TEST"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP,bug"
