@@ -17,11 +17,11 @@ jobs:
         id: pr_template
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./.github/PULL_REQUEST_TEMPLATE.md
+          path: ./.github/pull_request_template.md
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: " Hotfix: ${{github.event.head_commit.message}}"
+          pr_title: "Hotfix: ${{github.event.head_commit.message}}"
           pr_body: ${{steps.pr_template.outputs.content}}
           pr_assignee: ${{github.actor}}
           pr_label: "WIP,bug"
@@ -36,6 +36,8 @@ jobs:
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
+          pr_title: "Release: ${{github.event.head_commit.message}}"
+          pr_body: ${{steps.pr_template.outputs.content}}
           pr_assignee: ${{github.actor}}
           pr_label: "WIP,release"
           pr_draft: true
