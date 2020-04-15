@@ -22,9 +22,9 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           pr_title: ${{github.event.pull_request.title}}
-          pr_body: "##TEST ${{steps.pr_template.outputs.content}}"
+          pr_body: "##TEST"
           pr_assignee: ${{github.actor}}
-          pr_label: "WIP, bug"
+          pr_label: "WIP,bug"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
   create-release:
@@ -37,6 +37,6 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           pr_assignee: ${{github.actor}}
-          pr_label: "WIP, release"
+          pr_label: "WIP,release"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
