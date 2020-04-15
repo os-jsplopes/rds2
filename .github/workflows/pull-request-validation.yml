@@ -32,7 +32,7 @@ jobs:
         if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
   validate-build:
     runs-on: ubuntu-latest
-    name: Build and Run Project Tests
+    name: Validate Build and Tests Run
     if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
 
     steps:
