@@ -18,6 +18,8 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./.github/PULL_REQUEST_TEMPLATE.md
+      - name: Echo template
+        run: echo ${{ steps.pr_template.outputs.content }}
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
