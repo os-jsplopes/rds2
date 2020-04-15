@@ -10,13 +10,12 @@ jobs:
   create-hotfix:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'hotfix')
-    name: Create Pull Request
+    name: Create Pull Request for Hotfix
     steps:
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref }} into master"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP, bug"
           pr_draft: true
@@ -24,13 +23,12 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'release')
-    name: Create Pull Request
+    name: Create Pull Request for Release
     steps:
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref }} into master"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP, release"
           pr_draft: true
