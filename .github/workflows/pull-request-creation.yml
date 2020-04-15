@@ -9,28 +9,35 @@ on:
 jobs:
   create-hotfix:
     runs-on: ubuntu-latest
-    if: contains(github.head_ref, 'hotfix')
-    name: Create Pull Request
+    if: contains(github.ref, 'hotfix')
+    name: Create Pull Request for Hotfix
     steps:
       - uses: actions/checkout@v1
+      - name: Read template
+        id: pr_template
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./.github/PULL_REQUEST_TEMPLATE.md
+      - name: Echo template
+        run: echo ${{ steps.pr_template.outputs.content }}
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref }} into master"
+          pr_title: ${{github.event.pull_request.title}}
+          pr_body: ${{steps.pr_template.outputs.content}}
           pr_assignee: ${{github.actor}}
-          pr_label: "WIP, bugfix"
+          pr_label: "WIP, bug"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
   create-release:
     runs-on: ubuntu-latest
-    if: contains(github.head_ref, 'release')
-    name: Create Pull Request
+    if: contains(github.ref, 'release')
+    name: Create Pull Request for Release
     steps:
       - uses: actions/checkout@v1
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref }} into master"
           pr_assignee: ${{github.actor}}
           pr_label: "WIP, release"
           pr_draft: true

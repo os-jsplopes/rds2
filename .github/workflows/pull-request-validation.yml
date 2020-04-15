@@ -11,9 +11,10 @@ on:
 jobs:
   validate-branch:
     runs-on: ubuntu-latest
+    name: Validate Origin Branch
 
     steps:
-      - name: Automatic pull request review
+      - name: Automatic pull request origin branch review
         uses: thollander/actions-comment-pull-request@1.0.0
         if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
         with:
@@ -31,6 +32,7 @@ jobs:
         if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
   validate-build:
     runs-on: ubuntu-latest
+    name: Validate Build and Tests Run
     if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
 
     steps:
