@@ -13,9 +13,16 @@ jobs:
     name: Create Pull Request for Hotfix
     steps:
       - uses: actions/checkout@v1
+      - name: Read template
+        id: pr_template
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./.github/PULL_REQUEST_TEMPLATE.md
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
+          pr_title: ${{github.event.pull_request.title}}
+          pr_body: ${{pr_template}}
           pr_assignee: ${{github.actor}}
           pr_label: "WIP, bug"
           pr_draft: true
