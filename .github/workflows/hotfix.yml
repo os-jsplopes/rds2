@@ -21,13 +21,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: Version
-        id: version
-        uses: ypicard/get-branch-name-github-action@v1
-      - run: "echo ${{steps.version.outputs.branch}}"
-      - run: "echo ${{steps.version.outputs.tag}}"
-      - run: "echo ${{steps.version.outputs}}"
-
       - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
@@ -35,6 +28,19 @@ jobs:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@${{env.GITHUB_USER}}"
+
+      - name: Get Branch Name
+        id: branch
+        uses: ypicard/get-branch-name-github-action@v1
+        run: "echo ${{steps.branch.outputs.branch}}"
+
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./package.json
+      - name: Echo package.json
+        run: echo ${{ steps.package.outputs.content }}
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
@@ -54,6 +60,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-pull-request:
+    needs: [build-and-deploy]
     runs-on: ubuntu-latest
     name: Create pull request on master
 
