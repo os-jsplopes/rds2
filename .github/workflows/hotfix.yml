@@ -33,7 +33,7 @@ jobs:
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "hotfix/1.0.0"
+          VALUE: "v1.0.0-hotfix"
           FILE: package.json
       #- name: Bump version
       #  run: |
