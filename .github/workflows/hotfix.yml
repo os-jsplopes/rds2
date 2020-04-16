@@ -35,10 +35,10 @@ jobs:
           KEY: version
           VALUE: "v1.0.0-hotfix"
           FILE: package.json
-      #- name: Bump version
-      #  run: |
-      #    git config --global user.name $GITHUB_USER
-      #    git config --global user.email $GITHUB_EMAIL
+      - name: Bump version
+        run: |
+          git config --global user.name $GITHUB_USER
+          git config --global user.email $GITHUB_EMAIL
       #    npm version patch
       #    git push --tags origin HEAD:master
       - name: Publish
