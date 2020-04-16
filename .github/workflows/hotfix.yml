@@ -8,8 +8,8 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
     name: Build and Publish hotfix package
+    runs-on: ubuntu-latest
     # Set this vars on project secrets
     env:
       GITHUB_USER: "os-jsplopes"
@@ -61,8 +61,9 @@ jobs:
 
   create-pull-request:
     needs: [build-and-deploy]
-    runs-on: ubuntu-latest
+    if: success()
     name: Create pull request on master
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
