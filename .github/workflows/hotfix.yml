@@ -1,0 +1,66 @@
+#Workflow tah will trigger a draft pull request creation on master branch
+
+name: Hotfix
+
+on:
+  push:
+    branches: [hotfix/*, release/*]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Publish hotfix package
+    # Set this vars on project secrets
+    env:
+      GITHUB_USER: "os-jsplopes"
+      GITHUB_EMAIL: "julio.lopes@outsystems.com"
+
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@${{env.GITHUB_USER}}"
+
+      - name: Set Version
+        uses: deef0000dragon1/json-edit-action/@v1
+        env:
+          KEY: version
+          VALUE: ${{github.ref}}
+          FILE: package.json
+      #- name: Bump version
+      #  run: |
+      #    git config --global user.name $GITHUB_USER
+      #    git config --global user.email $GITHUB_EMAIL
+      #    npm version patch
+      #    git push --tags origin HEAD:master
+      - name: Publish
+        run: npm publish --tag hotfix
+
+  create-pull-request:
+    runs-on: ubuntu-latest
+    name: Create pull request on master
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Read template
+        id: pr_template
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./.github/pull_request_template.md
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          pr_title: "Hotfix: ${{github.event.head_commit.message}}"
+          pr_body: ${{steps.pr_template.outputs.content}}
+          pr_assignee: ${{github.actor}}
+          pr_label: "WIP,bug"
+          pr_draft: true
+          github_token: ${{ secrets.GAT }}
