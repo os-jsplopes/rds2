@@ -43,6 +43,8 @@ jobs:
       #    git push --tags origin HEAD:master
       - name: Publish
         run: npm publish --tag hotfix
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-pull-request:
     runs-on: ubuntu-latest
