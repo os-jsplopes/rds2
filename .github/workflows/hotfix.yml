@@ -33,7 +33,7 @@ jobs:
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: ${{github.ref}}
+          VALUE: "hotfix"
           FILE: package.json
       #- name: Bump version
       #  run: |
@@ -54,7 +54,7 @@ jobs:
         id: pr_template
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./.github/pull_request_template.md
+          path: ./.github/PULL_REQUEST_TEMPLATE.md
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:

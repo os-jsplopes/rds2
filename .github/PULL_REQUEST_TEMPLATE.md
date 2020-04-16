@@ -10,7 +10,6 @@ Please check if your PR fulfills the following requirements:
 ## Pull request type
 
 <!-- Please do not submit updates to dependencies unless it fixes an issue. -->
-
 <!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->
 
 Please check the type of change your PR introduces:
