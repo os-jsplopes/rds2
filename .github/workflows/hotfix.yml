@@ -32,7 +32,7 @@ jobs:
       - name: Get Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
-        run: "echo ${{steps.branch.outputs.branch}}"
+      - run: "echo ${{steps.branch.outputs.branch}}"
 
       - name: Read package.json
         id: package
