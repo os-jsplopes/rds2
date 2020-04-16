@@ -21,6 +21,13 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - name: Version
+        id: version
+        uses: ypicard/get-branch-name-github-action@v1
+      - run: ${{steps.version.outputs.branch}}
+      - run: ${{steps.version.outputs.tag}}
+      - run: ${{steps.version.outputs}}
+
       - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
