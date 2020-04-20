@@ -32,21 +32,19 @@ jobs:
       - name: Get Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
-      - run: "echo ${{steps.branch.outputs.branch}}"
+      - run: "echo ${{steps.branch.outputs}}"
 
       - name: Read package.json
         id: package
         uses: juliangruber/read-file-action@v1
         with:
           path: ./package.json
-      - name: Echo package.json
-        run: echo ${{ steps.package.outputs.content }}
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "v1.0.0-hotfix"
+          VALUE: "v${{steps.package.outputs.content.version}}-hotfix"
           FILE: package.json
       - name: Bump version
         run: |
@@ -61,7 +59,6 @@ jobs:
 
   create-pull-request:
     needs: [build-and-deploy]
-    if: success()
     name: Create pull request on master
     runs-on: ubuntu-latest
 
