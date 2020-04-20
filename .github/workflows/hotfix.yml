@@ -32,19 +32,24 @@ jobs:
       - name: Get Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
-      - run: "echo ${{steps.branch.outputs}}"
+        env:
+          TEST: ${{ toJson(steps.branch.outputs) }}
+
+      - run: "echo $TEST"
 
       - name: Read package.json
         id: package
         uses: juliangruber/read-file-action@v1
         with:
           path: ./package.json
+        env:
+          VERSION: ${{ steps.package.outputs.version }}
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "v${{steps.package.outputs.content.version}}-hotfix"
+          VALUE: "v$VERSION-hotfix"
           FILE: package.json
       - name: Bump version
         run: |
