@@ -48,7 +48,10 @@ jobs:
         with:
           path: ./package.json
 
-      - run: echo "${{ toJson(steps.package.outputs) }}"
+      - name: Dump package context
+        env:
+          PKG: ${{ toJson(steps.package.outputs) }}
+        run: echo "$PKG"
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
