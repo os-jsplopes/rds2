@@ -48,7 +48,7 @@ jobs:
         with:
           path: ./package.json
 
-      - run: echo "${{ steps.package.outputs }}"
+      - run: echo "${{ toJson(steps.package.outputs) }}"
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
