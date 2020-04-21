@@ -29,19 +29,26 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@${{env.GITHUB_USER}}"
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Get Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
+
+      - run: echo "$TEST"
         env:
           TEST: ${{ toJson(steps.branch.outputs) }}
-
-      - run: "echo $TEST"
 
       - name: Read package.json
         id: package
         uses: juliangruber/read-file-action@v1
         with:
           path: ./package.json
+
+      - run: echo "$VERSION"
         env:
           VERSION: ${{ steps.package.outputs.version }}
 
