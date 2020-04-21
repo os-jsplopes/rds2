@@ -49,9 +49,11 @@ jobs:
           path: ./package.json
 
       - name: Dump package context
-        env:
-          PKG: ${{ toJson(steps.package.outputs) }}
-        run: echo "$PKG"
+        run: echo "${{steps.package.outputs.content.version}}"
+
+      - name: get-npm-version
+        uses: martinbeentjes/npm-get-version-action@master
+        run: "echo ${{ steps.get-npm-version.outputs.current-version}}"
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
