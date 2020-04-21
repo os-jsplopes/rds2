@@ -57,7 +57,7 @@ jobs:
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "v$VERSION-hotfix-${{ github.event.repository.id }}"
+          VALUE: "v${{steps.package.outputs.content.version}}-hotfix-${{ github.event.repository.id }}"
           FILE: package.json
       - name: Bump version
         run: |
