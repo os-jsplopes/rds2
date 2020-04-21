@@ -34,13 +34,13 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - run: echo "${{ github.event.repository.id }}"
+
       - name: Get Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
 
-      - run: echo "$TEST"
-        env:
-          TEST: ${{ toJson(steps.branch.outputs) }}
+      - run: echo "${{ toJson(steps.branch.outputs) }}"
 
       - name: Read package.json
         id: package
@@ -48,9 +48,7 @@ jobs:
         with:
           path: ./package.json
 
-      - run: echo "$VERSION"
-        env:
-          VERSION: ${{ steps.package.outputs.version }}
+      - run: echo "${{ steps.package.outputs.version }}"
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
