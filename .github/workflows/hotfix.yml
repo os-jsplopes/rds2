@@ -64,7 +64,7 @@ jobs:
       #    npm version patch
       #    git push --tags origin HEAD:master
       - name: Publish
-        run: npm publish --tag hotfix
+        run: npm publish --tag hotfix.${{ github.event.repository.id }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
