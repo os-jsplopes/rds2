@@ -1,4 +1,6 @@
-#Workflow tah will trigger a draft pull request creation on master branch
+# Workflow that will trigger the build validation
+# if succeded deploy a package for testing and
+# then create or update a pull request on master branch
 
 name: Hotfix
 
@@ -16,11 +18,6 @@ jobs:
       GITHUB_EMAIL: "julio.lopes@outsystems.com"
 
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - uses: actions/checkout@v2
       - name: Use Node.js 12
         uses: actions/setup-node@v1
@@ -29,53 +26,40 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@${{env.GITHUB_USER}}"
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - run: echo "${{ github.event.repository.id }}"
-
-      - name: Get Branch Name
+      - name: Read Branch Name
         id: branch
         uses: ypicard/get-branch-name-github-action@v1
 
-      - run: echo "${{ toJson(steps.branch.outputs) }}"
-
-      - name: Read package.json
+      - name: Read Current Version
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
-
-      - name: get-npm-version
-        uses: martinbeentjes/npm-get-version-action@master
-
-      - run: "echo ${{ steps.get-npm-version.outputs.current-version}}"
 
       - name: Set Version
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "v${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+          VALUE: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           FILE: package.json
-      - name: Bump version
-        run: |
-          git config --global user.name $GITHUB_USER
-          git config --global user.email $GITHUB_EMAIL
-      #    npm version patch
-      #    git push --tags origin HEAD:master
+
+      - name: Delete Previous Package Publication
+        uses: actions/delete-package-versions@v1
+        with:
+          package-name: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+          token: ${{ secrets.GAT }}
+
       - name: Publish
         run: npm publish --tag hotfix.${{ github.event.repository.id }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  create-pull-request:
+  create-update-pull-request:
     needs: [build-and-deploy]
-    name: Create pull request on master
+    name: Create/Update pull request on master
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: Read template
+      - name: Read pull request template
         id: pr_template
         uses: juliangruber/read-file-action@v1
         with:
