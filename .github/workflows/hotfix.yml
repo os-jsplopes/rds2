@@ -51,6 +51,8 @@ jobs:
       - name: Dump package context
         run: echo "${{toJson(steps.package)}}"
 
+      - run: echo "${{toJson(steps.package.outputs.content.version)}}"
+
       - name: get-npm-version
         uses: martinbeentjes/npm-get-version-action@master
 
