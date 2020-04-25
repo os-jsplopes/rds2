@@ -44,7 +44,7 @@ jobs:
       - name: Delete Previous Package Publication
         uses: actions/delete-package-versions@v1
         with:
-          package-name: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+          package-name: "@os-jsplopes/rds2@0.1.0-hotfix.252241987"
           token: ${{ secrets.GAT }}
 
       - name: Publish
