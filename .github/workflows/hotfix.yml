@@ -49,7 +49,7 @@ jobs:
           path: ./package.json
 
       - name: Dump package context
-        run: echo "${{toJson(steps.package.outputs)}}"
+        run: echo "${{toJson(steps.package)}}"
 
       - name: get-npm-version
         uses: martinbeentjes/npm-get-version-action@master
