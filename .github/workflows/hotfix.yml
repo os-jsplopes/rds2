@@ -43,15 +43,8 @@ jobs:
       - run: echo "${{ toJson(steps.branch.outputs) }}"
 
       - name: Read package.json
-        id: package
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./package.json
-
-      - run: echo "${{steps.package.outputs.content.version}}"
-
-      - name: Dump package context
-        run: echo "${{toJson(steps.package)}}"
+        uses: tyankatsu0105/read-package-version-actions@v1
+        id: package-version
 
       - name: get-npm-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -62,7 +55,7 @@ jobs:
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "v${{steps.package.outputs.content.version}}-hotfix-${{ github.event.repository.id }}"
+          VALUE: "v${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           FILE: package.json
       - name: Bump version
         run: |
