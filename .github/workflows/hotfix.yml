@@ -42,22 +42,31 @@ jobs:
           FILE: package.json
 
       - name: Testaa
-        uses: ./
-        id: tt
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: octokit/graphql-action@v2.x
+        id: get_package_id
         with:
-          query: ./.github/graphql/get-package-id-by-version.query.yaml
-          owner: ${{env.GITHUB_USER}}
-          name: ${{ github.event.repository.name }}
+          query: |
+            query($owner:String!, $name:String!, $version:String!) {
+              repository(owner:$owner, name:$name) {
+                packages(names: [$name], last: 1) {
+                  nodes {
+                    version(version:$version) {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          owner: ${{ github.event.repository.owner.name }}
+          repo: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
 
-      - run: echo "${{ toJson(steps.tt.outputs) }}"
+      - run: echo "${{ toJson(steps.get_package_id.outputs) }}"
 
       - name: Delete Previous Package Publication
         uses: actions/delete-package-versions@v1
         with:
-          package-name: "@os-jsplopes/rds2@0.1.0-hotfix.252241987"
+          package-version-ids: ${{ steps.get_package_id.outputs }}
           token: ${{ secrets.GAT }}
 
       - name: Publish
