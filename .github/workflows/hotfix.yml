@@ -49,8 +49,10 @@ jobs:
           headers: '{"Authorization": "bearer ${{ secrets.GITHUB_TOKEN }}",  "Accept": "application/vnd.github.packages-preview+json"}'
           method: post
           graphql: |
-            viewer { 
-              login
+            {
+              viewer { 
+                login
+              }
             }
 
       - run: echo "${{ toJson(steps.gt.outputs) }}"
