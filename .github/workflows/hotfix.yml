@@ -49,16 +49,8 @@ jobs:
           headers: '{"Authorization": "bearer ${{ secrets.GITHUB_TOKEN }}",  "Accept": "application/vnd.github.packages-preview+json"}'
           method: post
           graphql: |
-            query($owner:String!, $name:String!, $version:String!) {
-              repository(owner:$owner, name:$name) {
-                id
-                name
-            }
-          variables: |
-            {
-              "owner": "${{ github.event.repository.owner.name }}",
-              "name": "${{ github.event.repository.name }}",
-              "version": "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+            viewer { 
+              login
             }
 
       - run: echo "${{ toJson(steps.gt.outputs) }}"
