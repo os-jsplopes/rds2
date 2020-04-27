@@ -46,7 +46,7 @@ jobs:
         id: get_package_id
         with:
           query: |
-            query($owner:String!, $name:String!, $version:String!) {
+            query($owner:String!, $name:String!) {
               repository(owner:$owner, name:$name) {
                  id
                  name
