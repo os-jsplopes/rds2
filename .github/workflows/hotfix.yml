@@ -61,7 +61,7 @@ jobs:
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           headers: |
             { 
-              accept: "application/vnd.github.packages-preview+json"
+              authorization: "token secret123"
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
