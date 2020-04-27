@@ -59,9 +59,12 @@ jobs:
           owner: ${{ github.event.repository.owner.name }}
           name: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
-          headers: '${{ toJson("{accept: ''application/vnd.github.packages-preview+json''}") }}'
+          headers: ${{ $TEST }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEST2: |
+            accept: "application/vnd.github.packages-preview+json"
+          TEST: ${{ toJson($TEST2) }}
 
       - run: echo "${{ toJson(steps.get_package_id.outputs) }}"
 
