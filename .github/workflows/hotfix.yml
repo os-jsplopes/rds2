@@ -47,7 +47,7 @@ jobs:
         with:
           query: |
             query($owner:String!, $reponame:String!) {
-              repository(owner:$owner, reponame:$reponame) {
+              repository(owner:$owner, name:$reponame) {
                  packages(names: [$reponame], last: 1) {
                   totalCount
                 }
