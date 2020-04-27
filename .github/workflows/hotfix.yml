@@ -46,6 +46,7 @@ jobs:
         id: get_package_id
         with:
           query: |
+          { query: `
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
                 packages(names: [$name], last: 1) {
@@ -56,11 +57,18 @@ jobs:
                   }
                 }
               }
+            }`,
+            headers: {
+              accept: "application/vnd.github.packages-preview+json",
+              authorization: "ass"
             }
+          }
           owner: ${{ github.event.repository.owner.name }}
           name: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
-          headers: '{ authorization: "${{ secrets.GITHUB_TOKEN }}" }'
+          headers: "{ authorization: 'aaaaa' }"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: echo "${{ toJson(steps.get_package_id.outputs) }}"
 
