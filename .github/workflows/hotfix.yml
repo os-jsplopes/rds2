@@ -46,7 +46,7 @@ jobs:
         id: get_package_id
         with:
           query: |
-            query($owner:String!, $name:String!) {
+            query($owner:String!, $reponame:String!) {
               repository(owner:$owner, reponame:$reponame) {
                  packages(names: [$reponame], last: 1) {
                   totalCount
