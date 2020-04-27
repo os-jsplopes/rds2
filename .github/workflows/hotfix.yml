@@ -41,31 +41,17 @@ jobs:
           VALUE: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           FILE: package.json
 
-      - name: TB
-        uses: CamiloGarciaLaRotta/watermelon-http-client@v1
-        id: gt
-        with:
-          url: "https://api.github.com/graphql"
-          headers: '{"Authorization": "bearer ${{ secrets.GITHUB_TOKEN }}",  "Accept": "application/vnd.github.packages-preview+json"}'
-          method: post
-          graphql: |
-            {
-              viewer { 
-                login
-              }
-            }
-
-      - run: echo "${{ toJson(steps.gt.outputs) }}"
-
       - name: Testaa
         uses: octokit/graphql-action@v2.x
         id: get_package_id
         with:
           query: |
-            query($owner:String!, $name:String!, $version:String!) {
-              repository(owner:$owner, name:$name) {
-                 id
-                 name
+            {
+              repository(owner: "CamiloGarciaLaRotta", name: "watermelon-http-client") {
+                id
+                name
+                createdAt
+              }
             }
           owner: "${{ github.event.repository.owner.name }}"
           name: "${{ github.event.repository.name }}"
