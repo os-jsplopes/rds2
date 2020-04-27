@@ -46,6 +46,7 @@ jobs:
         id: gt
         with:
           headers: '{"Authorization": "bearer ${{ secrets.GITHUB_TOKEN }}",  "Accept": "application/vnd.github.packages-preview+json"}'
+          method: post
           graphql: |
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
