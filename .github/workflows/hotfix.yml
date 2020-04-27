@@ -71,10 +71,8 @@ jobs:
           query: |
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
-                packages(names: [$name], last: 1) {
-                 totalCount
-                  }
-                }
+                 id
+                 name
             }
           owner: "${{ github.event.repository.owner.name }}"
           name: "${{ github.event.repository.name }}"
