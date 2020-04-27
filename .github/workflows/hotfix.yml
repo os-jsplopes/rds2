@@ -41,6 +41,14 @@ jobs:
           VALUE: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           FILE: package.json
 
+      - run: |
+          curl -X POST \
+            -s \
+            -H "Accept: application/vnd.github.packages-preview+json" \
+            -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{"query": query { repository(owner: \"${{ github.event.repository.owner.name }}\", name: \"${{ github.event.repository.name }}\") {packages(names: [\"${{ github.event.repository.name }}\"], last: 1) {nodes {version(version:\"${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}\") { id } }}}}"}' \
+            --url https://api.github.com/graphql
+
       - name: Tb
         uses: ./
         env:
@@ -67,7 +75,7 @@ jobs:
               }
             }
           owner: ${{ github.event.repository.owner.name }}
-          repo: ${{ github.event.repository.name }}
+          name: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           headers: '{ authorization: "aaaaa" }'
         env:
