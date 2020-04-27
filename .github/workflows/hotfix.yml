@@ -51,9 +51,8 @@ jobs:
           graphql: |
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
-                packages(names: [$name], last: 1) {
-                  totalCount
-                }
+                id
+                name
             }
           variables: |
             {
