@@ -61,9 +61,9 @@ jobs:
             }
           variables: |
             {
-              "owner": ${{ github.event.repository.owner.name }},
-              "name": ${{ github.event.repository.name }},
-              "version": `${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}`
+              "owner": "${{ github.event.repository.owner.name }}",
+              "name": "${{ github.event.repository.name }}",
+              "version": "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
             }
 
       - run: echo "${{ toJson(steps.gt.outputs) }}"
@@ -83,8 +83,8 @@ jobs:
                   }
                 }
             }
-          owner: ${{ github.event.repository.owner.name }}
-          name: ${{ github.event.repository.name }}
+          owner: "${{ github.event.repository.owner.name }}"
+          name: "${{ github.event.repository.name }}"
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           headers: '{ "accept": "application/vnd.github.corsair-preview+json" }'
         env:
