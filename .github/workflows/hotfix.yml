@@ -52,11 +52,7 @@ jobs:
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
                 packages(names: [$name], last: 1) {
-                  nodes {
-                    version(version:$version) {
-                      id
-                    }
-                  }
+                  totalCount
                 }
             }
           variables: |
@@ -76,10 +72,7 @@ jobs:
             query($owner:String!, $name:String!, $version:String!) {
               repository(owner:$owner, name:$name) {
                 packages(names: [$name], last: 1) {
-                  nodes {
-                    version(version:$version) {
-                      id
-                    }
+                 totalCount
                   }
                 }
             }
