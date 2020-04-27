@@ -60,7 +60,7 @@ jobs:
           owner: ${{ github.event.repository.owner.name }}
           repo: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
-          mediaType: '{ previews: ["packages"] }'
+          headers: '{ authorization: "aaaaa" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
