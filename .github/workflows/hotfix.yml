@@ -46,12 +46,10 @@ jobs:
         id: get_package_id
         with:
           query: |
-            {
-              repository(owner: "CamiloGarciaLaRotta", name: "watermelon-http-client") {
-                id
-                name
-                createdAt
-              }
+            query($owner:String!, $name:String!, $version:String!) {
+              repository(owner:$owner, name:$name) {
+                 id
+                 name
             }
           owner: "${{ github.event.repository.owner.name }}"
           name: "${{ github.event.repository.name }}"
