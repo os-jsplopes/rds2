@@ -59,7 +59,7 @@ jobs:
           owner: ${{ github.event.repository.owner.name }}
           name: ${{ github.event.repository.name }}
           version: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
-          headers: "${{ toJson({accept: 'application/vnd.github.packages-preview+json'}) }}"
+          headers: { "accept": "application/vnd.github.corsair-preview+json" }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
