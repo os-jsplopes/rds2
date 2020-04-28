@@ -34,15 +34,18 @@ jobs:
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
 
+      - name: Calculate Hotfix Version
+        run: echo "::set-env name=HOTFIX_VERSION::${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+
       - name: Calculate Version
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
-          VALUE: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+          VALUE: ${{ env.HOTFIX_VERSION }}
           FILE: package.json
 
       - name: Get Hotfix Package Id
-        uses: ./.github/actions/ms
+        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
         id: get_package_id
         with:
           query: |
@@ -61,10 +64,25 @@ jobs:
             }
           owner: ${{ github.event.repository.owner.name }}
           reponame: ${{ github.event.repository.name }}
-          version: ${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}
+          version: ${{ env.HOTFIX_VERSION }}
           headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete Package ${{ env.HOTFIX_VERSION }}
+        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
+        id: get_package_id
+        with:
+          query: |
+            mutation($packageversionid:String!) {
+              deletePackageVersion(input:{ packageVersionId:$packageversionid }) {
+                success 
+              }
+            }
+          packageversionid: ${{ fromJson(steps.get_package_id.outputs.data).repository.packages.edges[0].node.version.id }}
+          headers: '{ "Accept": "application/vnd.github.package-deletes-preview+json" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GAT }}
 
       #- name: Testaa
       #  uses: octokit/graphql-action@v2.x
@@ -83,14 +101,6 @@ jobs:
       #    headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - run: echo "${{ fromJson(steps.get_package_id.outputs.data).repository.packages.edges[0].node.version.id }}"
-
-      - name: Delete Previous Package Publication
-        uses: actions/delete-package-versions@v1
-        with:
-          package-version-ids: ${{ steps.get_package_id.outputs }}
-          token: ${{ secrets.GAT }}
 
       - name: Publish
         run: npm publish --tag hotfix.${{ github.event.repository.id }}
