@@ -71,7 +71,6 @@ jobs:
 
       - name: Delete Package ${{ env.HOTFIX_VERSION }}
         uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
-        id: get_package_id
         with:
           query: |
             mutation($packageversionid:String!) {
