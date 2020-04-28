@@ -12,10 +12,6 @@ jobs:
   build-and-deploy:
     name: Build and Publish hotfix package
     runs-on: ubuntu-latest
-    # Set this vars on project secrets
-    env:
-      GITHUB_USER: "os-jsplopes"
-      GITHUB_EMAIL: "julio.lopes@outsystems.com"
 
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +20,7 @@ jobs:
         with:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@${{env.GITHUB_USER}}"
+          scope: "@${{env.GITHUB_PACKAGE_SCOPE}}"
 
       - name: Read Branch Name
         id: branch
