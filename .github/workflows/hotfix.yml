@@ -45,6 +45,7 @@ jobs:
           FILE: package.json
 
       - name: Get Hotfix Package Id
+        continue-on-error: true
         uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
         id: get_package_id
         with:
@@ -102,7 +103,7 @@ jobs:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish
-        run: npm publish --tag hotfix.${{ github.event.repository.id }}
+        run: npm publish --tag hotfix.${{ github.event.repository.id }} --access restricted
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
