@@ -1,0 +1,133 @@
+# Workflow that will trigger the build validation
+# if succeded deploy a package for testing and
+# then create or update a pull request on master branch
+
+name: Hotfix
+
+on:
+  push:
+    branches: [hotfix/*, release/*]
+
+jobs:
+  build-and-deploy:
+    name: Build and Publish hotfix package
+    runs-on: ubuntu-latest
+    # Set this vars on project secrets
+    env:
+      GITHUB_USER: "os-jsplopes"
+      GITHUB_EMAIL: "julio.lopes@outsystems.com"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@${{env.GITHUB_USER}}"
+
+      - name: Read Branch Name
+        id: branch
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: Read Current Version
+        uses: tyankatsu0105/read-package-version-actions@v1
+        id: package-version
+
+      - name: Calculate Hotfix Version
+        run: echo "::set-env name=HOTFIX_VERSION::${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
+
+      - name: Calculate Version
+        uses: deef0000dragon1/json-edit-action/@v1
+        env:
+          KEY: version
+          VALUE: ${{ env.HOTFIX_VERSION }}
+          FILE: package.json
+
+      - name: Get Hotfix Package Id
+        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
+        id: get_package_id
+        with:
+          query: |
+            query($owner:String!, $reponame:String!, $version:String!) {
+              repository(owner:$owner, name:$reponame) {
+                 packages(names: [$reponame], last: 1) {
+                  edges {
+                    node {
+                      version(version:$version){
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          owner: ${{ github.event.repository.owner.name }}
+          reponame: ${{ github.event.repository.name }}
+          version: ${{ env.HOTFIX_VERSION }}
+          headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set HOTFIX_PACKAGE_ID Enviroment Variable
+        run: echo "::set-env name=HOTFIX_PACKAGE_ID::${{ fromJson(steps.get_package_id.outputs.data).repository.packages.edges[0].node.version.id }}"
+
+      - name: Delete Package ${{ env.HOTFIX_VERSION }}
+        if: ${{ env.HOTFIX_PACKAGE_ID != null }}
+        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
+        with:
+          query: |
+            mutation($packageversionid:String!) {
+              deletePackageVersion(input:{ packageVersionId:$packageversionid }) {
+                success 
+              }
+            }
+          packageversionid: ${{ env.HOTFIX_PACKAGE_ID }}
+          headers: '{ "Accept": "application/vnd.github.package-deletes-preview+json" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GAT }}
+
+      #- name: Testaa
+      #  uses: octokit/graphql-action@v2.x
+      #  id: get_package_id
+      #  with:
+      #    query: |
+      #      query($owner:String!, $reponame:String!) {
+      #        repository(owner:$owner, name:$reponame) {
+      #           packages(names: [$reponame], last: 1) {
+      #            totalCount
+      #          }
+      #        }
+      #      }
+      #    owner: "${{ github.event.repository.owner.name }}"
+      #    reponame: "${{ github.event.repository.name }}"
+      #    headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish
+        run: npm publish --tag hotfix.${{ github.event.repository.id }} --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-update-pull-request:
+    needs: [build-and-deploy]
+    name: Create/Update pull request on master
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Read pull request template
+        id: pr_template
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./.github/PULL_REQUEST_TEMPLATE.md
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          pr_title: "Hotfix: ${{github.event.head_commit.message}}"
+          pr_body: ${{steps.pr_template.outputs.content}}
+          pr_assignee: ${{github.actor}}
+          pr_label: "WIP,bug"
+          pr_draft: true
+          github_token: ${{ secrets.GAT }}

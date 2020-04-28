@@ -1,0 +1,22 @@
+query: "
+  query($owner:String!, $name:String!, $version:String!) {
+  repository(owner:$owner, name:$name) {
+  packages(names: [$name], last: 1) {
+  nodes {
+  version(version:$version) {
+  id
+  }
+  }
+  }
+  }
+  }"
+variables:
+  owner:
+    type: arg
+    name: owner
+  name:
+    type: arg
+    name: name
+  version:
+    type: arg
+    name: version
