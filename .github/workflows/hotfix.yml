@@ -87,7 +87,7 @@ jobs:
       - run: echo "${{ fromJson(steps.get_package_id.outputs.data).repository }}"
 
       - run: echo $TEST.repository
-        with:
+        env:
           TEST: ${{ fromJson(steps.get_package_id.outputs.data) }}
 
       - name: Delete Previous Package Publication
