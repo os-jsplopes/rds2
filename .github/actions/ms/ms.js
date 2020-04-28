@@ -419,6 +419,7 @@ module.exports = /******/ (function (modules, runtime) {
                         // this condition prevents the returning wring value
                         // because neither JSON.parse(false) or JSON.parse(1234) throw errors
                         // and JSON.parse(null) returns null so we have to check for that
+                        core.info("CONVERTED TO OBJECT: " + value);
                         return obj;
                     }
                 } catch (e) {
