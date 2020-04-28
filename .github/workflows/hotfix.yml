@@ -45,7 +45,7 @@ jobs:
           FILE: package.json
 
       - name: Get Hotfix Package Id
-        if: ${{ env.HOTFIX_VERSION !== '' }}
+        if: ${{ env.HOTFIX_VERSION != '' }}
         uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
         id: get_package_id
         with:
@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete Package ${{ env.HOTFIX_VERSION }}
-        if: ${{ env.HOTFIX_VERSION !== '' }}
+        if: ${{ env.HOTFIX_VERSION != '' }}
         uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
         with:
           query: |
