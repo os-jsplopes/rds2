@@ -1,9 +1,9 @@
 const { Octokit } = require("@octokit/action");
-const octokit = new Octokit();
 
 main();
 
 async function main() {
+    const octokit = new Octokit();
     const res = await octokit.graphql(
         `query($owner:String!, $reponame:String!) {
         repository(owner:$owner, name:$reponame) {
