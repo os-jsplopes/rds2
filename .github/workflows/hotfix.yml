@@ -55,7 +55,7 @@ jobs:
             }
           owner: "${{ github.event.repository.owner.name }}"
           reponame: "${{ github.event.repository.name }}"
-          headers: '{ "Accept": "application/vnd.github.package-preview+json" }'
+          headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
