@@ -34,7 +34,7 @@ jobs:
         uses: tyankatsu0105/read-package-version-actions@v1
         id: package-version
 
-      - name: Set Version
+      - name: Calculate Version
         uses: deef0000dragon1/json-edit-action/@v1
         env:
           KEY: version
@@ -84,7 +84,7 @@ jobs:
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo "${{ steps.get_package_id.outputs.data.repository.packages.edges.node.version.id }}"
+      - run: echo "${{ fromJson(steps.get_package_id.outputs.data).repository.packages.edges.node.version.id }}"
 
       - name: Delete Previous Package Publication
         uses: actions/delete-package-versions@v1
