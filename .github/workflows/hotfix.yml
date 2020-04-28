@@ -84,7 +84,7 @@ jobs:
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo "${{ toJson(steps.get_package_id.outputs) }}"
+      - run: echo "${{ toJson(steps.get_package_id.outputs.data.repository.packages.edges.node.version.id) }}"
 
       - name: Delete Previous Package Publication
         uses: actions/delete-package-versions@v1
