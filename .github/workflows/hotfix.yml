@@ -43,7 +43,7 @@ jobs:
 
       - name: Testb
         uses: .github/actions/ms.js
-        id: get_package_id
+        id: gb
         with:
           query: |
             query($owner:String!, $reponame:String!) {
