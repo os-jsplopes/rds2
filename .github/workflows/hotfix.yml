@@ -82,7 +82,7 @@ jobs:
                 success 
               }
             }
-          packageversionid: ${{ env.HOTFIX_PACKAGE_ID != null }}
+          packageversionid: ${{ env.HOTFIX_PACKAGE_ID }}
           headers: '{ "Accept": "application/vnd.github.package-deletes-preview+json" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GAT }}
