@@ -42,7 +42,7 @@ jobs:
           FILE: package.json
 
       - name: Testb
-        uses: ./.github/actions/ms.js
+        uses: ./.github/actions/ms
         id: gb
         with:
           query: |
