@@ -394,9 +394,7 @@ module.exports = /******/ (function (modules, runtime) {
                         {
                             owner: "os-jsplopes",
                             reponame: "rds2",
-                            headers: {
-                                Accept: "application/vnd.github.packages-preview+json",
-                            },
+                            headers: '{ Accept: "application/vnd.github.packages-preview+json" }',
                         }
                     );
 
