@@ -381,7 +381,22 @@ module.exports = /******/ (function (modules, runtime) {
                     }
 
                     const time = Date.now();
-                    const data = await octokit.graphql(query, variables);
+                    const data = await await octokit.graphql(
+                        `query($owner:String!, $reponame:String!) {
+                            repository(owner:$owner, name:$reponame) {
+                               packages(names: [$reponame], last: 1) {
+                                totalCount
+                              }
+                            }
+                          }`,
+                        {
+                            owner: "os-jsplopes",
+                            reponame: "rds2",
+                            headers: {
+                                Accept: "application/vnd.github.packages-preview+json",
+                            },
+                        }
+                    );
 
                     core.info(`< 200 ${Date.now() - time}ms`);
 
