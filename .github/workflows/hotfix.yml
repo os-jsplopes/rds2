@@ -41,9 +41,22 @@ jobs:
           VALUE: "${{ steps.package-version.outputs.version }}-hotfix.${{ github.event.repository.id }}"
           FILE: package.json
 
-      - run: npm install -g @octokit/action --registry=https://registry.npmjs.org
-
       - run: node .github/actions/ms.js
+        id: get_package_id
+        with:
+          query: |
+            query($owner:String!, $reponame:String!) {
+              repository(owner:$owner, name:$reponame) {
+                 packages(names: [$reponame], last: 1) {
+                  totalCount
+                }
+              }
+            }
+          owner: "${{ github.event.repository.owner.name }}"
+          reponame: "${{ github.event.repository.name }}"
+          headers: '{ Accept: "application/vnd.github.packages-preview+json" }'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Testaa
         uses: octokit/graphql-action@v2.x
