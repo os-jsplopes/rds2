@@ -380,8 +380,10 @@ module.exports = /******/ (function (modules, runtime) {
                         core.info(`> ${name}: ${value}`);
                     }
 
+                    core.info(variables);
+
                     const time = Date.now();
-                    const data = await await octokit.graphql(
+                    const data = await octokit.graphql(
                         `query($owner:String!, $reponame:String!) {
                             repository(owner:$owner, name:$reponame) {
                                packages(names: [$reponame], last: 1) {
