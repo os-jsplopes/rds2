@@ -408,6 +408,10 @@ module.exports = /******/ (function (modules, runtime) {
             }
 
             function getAllInputs() {
+                core.info("AAAAAAAAAAAAAAAAAAAA");
+                core.info(JSON.stringify(process.env, null, 2));
+                core.info("AAAAAAAAAAAAAAAAAAAA");
+
                 return Object.entries(process.env).reduce((result, [key, value]) => {
                     if (!/^INPUT_/.test(key)) return result;
 
