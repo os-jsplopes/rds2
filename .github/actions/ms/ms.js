@@ -380,7 +380,7 @@ module.exports = /******/ (function (modules, runtime) {
                         core.info(`> ${name}: ${value}`);
                     }
 
-                    core.info(variables);
+                    core.info(JSON.stringify(variables, null, 2));
 
                     const time = Date.now();
                     const data = await octokit.graphql(
