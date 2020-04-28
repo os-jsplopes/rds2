@@ -407,6 +407,26 @@ module.exports = /******/ (function (modules, runtime) {
                 }
             }
 
+            function parseValue(value) {
+                try {
+                    if (parseInt(value, 10)) {
+                        return parseInt(value, 10);
+                    }
+
+                    var obj = JSON.parse(value);
+                    if (obj && typeof obj === "object") {
+                        // this condition prevents the returning wring value
+                        // because neither JSON.parse(false) or JSON.parse(1234) throw errors
+                        // and JSON.parse(null) returns null so we have to check for that
+                        return obj;
+                    }
+                } catch (e) {
+                    // ignore the error thrown by the parsing
+                }
+
+                return value;
+            }
+
             function getAllInputs() {
                 core.info("AAAAAAAAAAAAAAAAAAAA");
                 core.info(JSON.stringify(process.env, null, 2));
@@ -416,11 +436,7 @@ module.exports = /******/ (function (modules, runtime) {
                     if (!/^INPUT_/.test(key)) return result;
 
                     const inputName = key.substr("INPUT_".length).toLowerCase();
-                    result[inputName] = value;
-                    result[inputName] =
-                        result[inputName] == parseInt(result[inputName], 10)
-                            ? parseInt(result[inputName], 10)
-                            : result[inputName];
+                    result[inputName] = parseValue(value);
                     return result;
                 }, {});
             }
