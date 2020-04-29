@@ -19,10 +19,34 @@ jobs:
         with:
           node-version: "12.x"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@${{env.GITHUB_PACKAGE_SCOPE}}"
+          scope: "@${{env.PACKAGE_SCOPE}}"
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+      - name: Get Hotfix Package Id
+        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
+        id: get_package_id
+        with:
+          query: |
+            query($owner:String!, $reponame:String!, $version:String!) {
+              repository(owner:$owner, name:$reponame) {
+                 packages(names: [$reponame], last: 1) {
+                  edges {
+                    node {
+                      version(version:$version){
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          owner: ${{ github.event.repository.owner.name }}
+          reponame: ${{ github.event.repository.name }}
+          version: "0.1.0"
+          mediaType: '{"previews": ["packages"]}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-update-pull-request:
     needs: [build]

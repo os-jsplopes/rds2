@@ -1,3 +1,3 @@
-modeule.exports = function() {
+modeule.exports = function () {
     console.log("Hello World");
 };
