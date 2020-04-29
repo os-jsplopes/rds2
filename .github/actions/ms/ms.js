@@ -4803,7 +4803,6 @@ module.exports = /******/ (function (modules, runtime) {
             }
 
             function merge(defaults, route, options) {
-                console.log("AA: " + JSON.stringify(options));
                 if (typeof route === "string") {
                     let [method, url] = route.split(" ");
                     options = Object.assign(
@@ -5055,7 +5054,7 @@ module.exports = /******/ (function (modules, runtime) {
             function parse(options) {
                 // https://fetch.spec.whatwg.org/#methods
                 let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
-                console.log(JSON.stringify(options));
+                console.log("OPTIONS: " + JSON.stringify(options));
                 let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{+$1}");
                 let headers = Object.assign({}, options.headers);
                 let body;
