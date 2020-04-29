@@ -30,7 +30,7 @@ jobs:
           query: |
             query($owner:String!, $reponame:String!, $version:String!) {
               repository(owner:$owner, name:$reponame) {
-                 packages(names: [$reponame], last: 1) {
+                 packages(names:[$reponame], last: 1) {
                   edges {
                     node {
                       version(version:$version){
