@@ -5054,7 +5054,7 @@ module.exports = /******/ (function (modules, runtime) {
             function parse(options) {
                 // https://fetch.spec.whatwg.org/#methods
                 let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
-
+                console.log(JSON.stringify(options));
                 let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{+$1}");
                 let headers = Object.assign({}, options.headers);
                 let body;
@@ -5066,13 +5066,13 @@ module.exports = /******/ (function (modules, runtime) {
                 if (!/^http/.test(url)) {
                     url = options.baseUrl + url;
                 }
-
+                console.log("ENTREIIII0");
                 const omittedParameters = Object.keys(options)
                     .filter((option) => urlVariableNames.includes(option))
                     .concat("baseUrl");
                 const remainingParameters = omit(parameters, omittedParameters);
                 const isBinaryRequset = /application\/octet-stream/i.test(headers.accept);
-
+                console.log("ENTREIIII: " + isBinaryRequset);
                 if (!isBinaryRequset) {
                     if (options.mediaType.format) {
                         // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
