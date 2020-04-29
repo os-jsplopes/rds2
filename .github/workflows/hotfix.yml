@@ -43,7 +43,7 @@ jobs:
             }
           owner: ${{ github.event.repository.owner.name }}
           reponame: ${{ github.event.repository.name }}
-          version: "0.1.0"
+          version: "0.1.1-hotfix.252241987"
           headers: '{ "Accept": "application/vnd.github.packages-preview+json" }'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
