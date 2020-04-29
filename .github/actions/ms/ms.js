@@ -11938,7 +11938,7 @@ module.exports = /******/ (function (modules, runtime) {
                 }
             }
 
-            const NON_VARIABLE_OPTIONS = ["method", "baseUrl", "url", "headers", "request", "query"];
+            const NON_VARIABLE_OPTIONS = ["method", "baseUrl", "url", "headers", "request", "query", "mediaType"];
             function graphql(request, query, options) {
                 options =
                     typeof query === "string"
