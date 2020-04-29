@@ -5088,6 +5088,8 @@ module.exports = /******/ (function (modules, runtime) {
                     }
 
                     if (options.mediaType.previews.length) {
+                        console.log("ENTREIIII");
+                        console.log(JSON.stringify(options.mediaType.previews));
                         const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
                         headers.accept = previewsFromAcceptHeader
                             .concat(options.mediaType.previews)
