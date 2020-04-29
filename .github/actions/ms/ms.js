@@ -4803,6 +4803,7 @@ module.exports = /******/ (function (modules, runtime) {
             }
 
             function merge(defaults, route, options) {
+                console.log("AA: " + JSON.stringify(options));
                 if (typeof route === "string") {
                     let [method, url] = route.split(" ");
                     options = Object.assign(
@@ -4820,6 +4821,8 @@ module.exports = /******/ (function (modules, runtime) {
                     options = Object.assign({}, route);
                 } // lowercase header names before merging with defaults to avoid duplicates
 
+                console.log("AAD: " + JSON.stringify(defaults));
+
                 options.headers = lowercaseKeys(options.headers);
                 const mergedOptions = mergeDeep(defaults || {}, options); // mediaType.previews arrays are merged, instead of overwritten
 
@@ -4828,7 +4831,7 @@ module.exports = /******/ (function (modules, runtime) {
                         .filter((preview) => !mergedOptions.mediaType.previews.includes(preview))
                         .concat(mergedOptions.mediaType.previews);
                 }
-
+                console.log("AA: " + JSON.stringify(mergedOptions));
                 mergedOptions.mediaType.previews = mergedOptions.mediaType.previews.map((preview) => preview.replace(/-preview/, ""));
                 return mergedOptions;
             }
