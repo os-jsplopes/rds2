@@ -1,7 +1,7 @@
-# Workflow that will trigger the build validation
+# Workflow that will trigger the build & test validations
 # then create or update a pull request on master branch
 
-name: CI Hotfix Branches
+name: CI Hotfix Push
 
 on:
   push:
@@ -9,48 +9,40 @@ on:
 
 jobs:
   build:
-    name: Build package hotfix
+    name: Build & Test
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic # Need an `id` for output variables
         with:
-          node-version: "12.x"
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@${{env.PACKAGE_SCOPE}}"
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-      - name: Get Hotfix Package Id
-        uses: ./.github/actions/ms # Replace with octokit/graphql-action@v2.x after commiting the fix
-        id: get_package_id
-        with:
-          query: |
-            query($owner:String!, $reponame:String!, $version:String!) {
-              repository(owner:$owner, name:$reponame) {
-                 packages(names:[$reponame], last:1) {
-                  edges {
-                    node {
-                      version(version:$version){
-                        id
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          owner: ${{ github.event.repository.owner.name }}
-          reponame: ${{ github.event.repository.name }}
-          version: "0.1.0"
-          mediaType: '{"previews": ["packages"]}'
+          dry_run: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GAT }}
+          NPM_TOKEN: ${{ secrets.GAT }}
 
-  create-update-pull-request:
+      - name: Do something when a new release published
+        run: |
+          echo ${{ steps.semantic.outputs.new_release_version }}
+          echo ${{ steps.semantic.outputs.new_release_major_version }}
+          echo ${{ steps.semantic.outputs.new_release_minor_version }}
+          echo ${{ steps.semantic.outputs.new_release_patch_version }}
+
+      #- name: Use Node.js 12
+      #  uses: actions/setup-node@v1
+      #  with:
+      #    node-version: "12.x"
+      #    registry-url: "https://npm.pkg.github.com"
+      #    scope: "@${{env.PACKAGE_SCOPE}}"
+      #- run: npm ci
+      #- run: npm run build --if-present
+      #- run: npm test
+
+  create-draft-pull-request:
     needs: [build]
-    name: Create/Update pull request to master
+    name: Create draft pull request to master
     runs-on: ubuntu-latest
 
     steps:
@@ -66,6 +58,6 @@ jobs:
           pr_title: "Hotfix: ${{github.event.head_commit.message}}"
           pr_body: ${{steps.pr_template.outputs.content}}
           pr_assignee: ${{github.actor}}
-          pr_label: "Work In Progress,bug"
+          pr_label: "work in progress,hotfix"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
