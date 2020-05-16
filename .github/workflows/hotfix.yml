@@ -18,6 +18,8 @@ jobs:
         uses: cycjimmy/semantic-release-action@v2
         id: semantic # Need an `id` for output variables
         with:
+          semantic_version: 16
+          branches: ["hotfix/*"]
           dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GAT }}
