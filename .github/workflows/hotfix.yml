@@ -19,7 +19,11 @@ jobs:
         id: semantic # Need an `id` for output variables
         with:
           semantic_version: 16
-          branches: ["hotfix/*", "master"]
+          branches: |
+            [
+              "hotfix/*",
+              "master"
+            ]
           dry_run: true
         env:
           GITHUB_TOKEN: ${{ secrets.GAT }}
