@@ -31,9 +31,8 @@ jobs:
         if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
         with:
           query: |
-            mutation($pullRequestId: ID!) {
-              closePullRequest($pullRequestId)
+            mutation() {
+              closePullRequest(${{ github.event.pull_request.id }})
             }
-          pullRequestId: "${{ github.event.pull_request.id }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
