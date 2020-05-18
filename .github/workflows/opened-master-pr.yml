@@ -32,7 +32,7 @@ jobs:
         with:
           query: |
             mutation() {
-              closePullRequest(${{ github.event.pull_request.id }})
+              closePullRequest(pullRequestId:${{ github.event.pull_request.id }})
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
