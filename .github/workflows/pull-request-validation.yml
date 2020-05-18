@@ -14,7 +14,7 @@ jobs:
     name: Validate Origin Branch
 
     steps:
-      - run: echo ${{ toJson(github.event.pull_request) }}
+      - run: echo ${{ toJson(github.event.pull_request.node_id) }}
 
       - name: Automatic pull request origin branch review
         uses: thollander/actions-comment-pull-request@1.0.0
