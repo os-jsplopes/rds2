@@ -20,9 +20,9 @@ jobs:
           # Message that should be printed in the pull request
           message: |
             ## :rotating_light: Invalid Pull Request :rotating_light:
-            Invalid source branch **develop**.
+            Invalid source branch **${{ github.head_ref }}**.
             The master branch only accept pull requests from **Hotfix** or **Release** branches.
-            **Please close the pull request!**
+            **🤖This pull request will be closed automaticly!**
             :thinking::raising_hand_man::point_up:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,8 +31,10 @@ jobs:
         if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
         with:
           query: |
-            mutation() {
-              closePullRequest(pullRequestId:${{ github.event.pull_request.id }})
+            mutation {
+              closePullRequest(input: { pullRequestId: "${{ github.event.pull_request.node_id }}", clientMutationId: "" }) {
+                clientMutationId
+              }
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
