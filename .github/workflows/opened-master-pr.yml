@@ -32,7 +32,7 @@ jobs:
         with:
           query: |
             mutation {
-              closePullRequest(input: { pullRequestId: "${{ github.event.pull_request.node_id }}", clientMutationId: "" }) {
+              closePullRequest(input:{pullRequestId:"${{ github.event.pull_request.node_id }}",clientMutationId:""}) {
                 clientMutationId
               }
             }
