@@ -6,30 +6,9 @@ name: Pull Request
 on:
   pull_request:
     branches: [master]
-    types: [opened, synchronize]
+    types: [synchronize]
 
 jobs:
-  validate-branch:
-    runs-on: ubuntu-latest
-    name: Validate Origin Branch
-
-    steps:
-      - name: Automatic pull request origin branch review
-        uses: thollander/actions-comment-pull-request@1.0.0
-        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
-        with:
-          # Message that should be printed in the pull request
-          message: |
-            ## :rotating_light: Invalid Pull Request :rotating_light:
-            Invalid source branch **develop**.
-            The master branch only accept pull requests from **Hotfix** or **Release** branches.
-            **Please close the pull request!**
-            :thinking::raising_hand_man::point_up:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: exit 1 # Error: Pull Request came from a invalid branch
-        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
-      - run: exit 0 # Success: Pull Request came from a valid branch
-        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release'))
   validate-build:
     runs-on: ubuntu-latest
     name: Validate Build and Tests Run
