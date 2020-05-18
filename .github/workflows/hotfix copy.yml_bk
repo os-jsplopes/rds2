@@ -2,16 +2,31 @@
 # then create or update a pull request on master branch
 
 name: Hotfix
-
 on:
   push:
     branches:
       - hotfix/*
 
 jobs:
-  # will fail silently if PR already exists
-  create-pull-request:
-    name: Create pull request to master
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@${{env.PACKAGE_SCOPE}}"
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+  create-draft-pull-request:
+    needs: [build]
+    name: Create draft pull request to master
     runs-on: ubuntu-latest
 
     steps:

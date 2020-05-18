@@ -1,0 +1,39 @@
+name: Opened Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+
+jobs:
+  open:
+    runs-on: ubuntu-latest
+    name: Validate
+
+    steps:
+      - name: Set error message
+        uses: thollander/actions-comment-pull-request@1.0.0
+        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
+        with:
+          # Message that should be printed in the pull request
+          message: |
+            ## :rotating_light: Invalid Pull Request :rotating_light:
+            Invalid source branch **develop**.
+            The master branch only accept pull requests from **Hotfix** or **Release** branches.
+            **Please close the pull request!**
+            :thinking::raising_hand_man::point_up:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Close pull request
+        uses: octokit/graphql-action@v2.x
+        if: (contains(github.head_ref, 'hotfix') || contains(github.head_ref, 'release')) == false
+        with:
+          query: |
+            mutation($pullRequestId: ID!) {
+              closePullRequest($pullRequestId)
+            }
+          pullRequestId: "${{ github.event.pull_request.id }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
