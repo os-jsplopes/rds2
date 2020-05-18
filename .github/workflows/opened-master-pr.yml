@@ -19,11 +19,10 @@ jobs:
         with:
           # Message that should be printed in the pull request
           message: |
-            ## :rotating_light: Invalid Pull Request :rotating_light:
+            # :rotating_light: Invalid Pull Request :rotating_light:
             Invalid source branch **${{ github.head_ref }}**.
             The master branch only accept pull requests from **Hotfix** or **Release** branches.
-            **🤖This pull request will be closed automaticly!**
-            :thinking::raising_hand_man::point_up:
+            ### 🤖 **This pull request will be closed automaticly!** 🤖
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Close pull request
