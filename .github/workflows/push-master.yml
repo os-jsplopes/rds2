@@ -1,0 +1,17 @@
+# Workflow that will trigger the build & test validations
+# then create or update a pull request on master branch
+
+name: Hotfix
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create-tag:
+    name: Create Github Tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo ${{toJson(github.event)}}
