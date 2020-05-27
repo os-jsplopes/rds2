@@ -3,6 +3,8 @@
 
 name: Hotfix
 
+if: false
+
 on:
   push:
     branches:
