@@ -1,7 +1,7 @@
 # Workflow that will trigger the build & test validations
 # then create or update a pull request on master branch
 
-name: Hotfix
+name: Push To Master
 
 on:
   push:
@@ -14,4 +14,4 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo ${{toJson(github.event)}}
+      - run: echo ${{toJson(github.head_ref)}}

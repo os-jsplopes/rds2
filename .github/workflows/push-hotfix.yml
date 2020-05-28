@@ -1,7 +1,7 @@
 # Workflow that will trigger the build & test validations
 # then create or update a pull request on master branch
 
-name: Hotfix
+name: Push To Hotfix
 
 on:
   push:
