@@ -131,3 +131,9 @@ jobs:
           pr_label: "WIP,bug"
           pr_draft: true
           github_token: ${{ secrets.GAT }}
+
+
+- name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"

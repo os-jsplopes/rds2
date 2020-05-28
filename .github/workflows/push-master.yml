@@ -15,3 +15,4 @@ jobs:
 
     steps:
       - run: echo ${{toJson(github)}}
+        if: (contains(github.head_commit.message, 'hotfix')
