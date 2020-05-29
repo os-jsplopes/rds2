@@ -25,7 +25,6 @@ jobs:
           npm version patch
           git add .
           git commit -m "bump patch version" -a
-          git push
       - name: Push patch version
         uses: ad-m/github-push-action@master
         with:
