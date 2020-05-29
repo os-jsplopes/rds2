@@ -25,4 +25,6 @@ jobs:
           npm version patch
           git add .
           git commit -m "bump patch version"
+          git push
+      - name: Create patch
           git push --tags origin HEAD:master
