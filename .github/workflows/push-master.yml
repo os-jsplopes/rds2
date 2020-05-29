@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo ${{toJson(github)}}
       - uses: actions/checkout@v2
       - name: Setup git
         run: |
