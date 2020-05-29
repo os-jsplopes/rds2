@@ -23,13 +23,14 @@ jobs:
       - name: Bump patch version
         run: |
           npm version patch
-          printf "\n\n$(date)" >> README.md
+          printf "\n\n$(date)" >> CHANGELOG.md
           git add .
           git commit -m "bump patch version" -a
-      - name: Push patch version
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GAT }}
-          tags: true
+          git push --force --tags origin HEAD:master
+      #- name: Push patch version
+      ##  uses: ad-m/github-push-action@master
+      #  with:
+      #    github_token: ${{ secrets.GAT }}
+      #    tags: true
       #- name: Create patch
-      #  run: git push --tags origin HEAD:master
+      #  run:
