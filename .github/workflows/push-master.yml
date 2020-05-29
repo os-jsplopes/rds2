@@ -27,4 +27,4 @@ jobs:
           git commit -m "bump patch version"
           git push
       - name: Create patch
-          git push --tags origin HEAD:master
+        run: git push --tags origin HEAD:master
