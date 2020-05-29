@@ -27,6 +27,8 @@ jobs:
           git add .
           git commit -m "bump patch version" -a
           git push --force --tags origin HEAD:master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #- name: Push patch version
       ##  uses: ad-m/github-push-action@master
       #  with:
