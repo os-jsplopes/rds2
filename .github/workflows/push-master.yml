@@ -9,10 +9,21 @@ on:
       - master
 
 jobs:
-  create-tag:
+  hotfix:
     name: Create Github Tag
+    if: contains(github.head_commit.message, 'hotfix')
     runs-on: ubuntu-latest
 
     steps:
       - run: echo ${{toJson(github)}}
-        if: (contains(github.head_commit.message, 'hotfix')
+      - uses: actions/checkout@v2
+      - name: Setup git
+        run: |
+          git config --global user.name ${{github.pusher.author.username}}
+          git config --global user.email ${{github.pusher.author.email}}
+      - name: Bump patch version
+        run: |
+          npm version patch
+          git add .
+          git commit -m "bump patch version"
+          git push --tags origin HEAD:master

@@ -25,9 +25,9 @@ jobs:
         run: |
           git config --global user.name $GITHUB_USER
           git config --global user.email $GITHUB_EMAIL
-      - name: Bump patch version
-        run: |
-          npm version patch
-          git push --tags origin HEAD:master
+      #- name: Bump patch version
+      #  run: |
+      #    npm version patch
+      #    git push --tags origin HEAD:master
       #- name: Publish
       #  run: npm publish --tag release
